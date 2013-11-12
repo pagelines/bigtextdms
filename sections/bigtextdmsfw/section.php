@@ -1,24 +1,20 @@
 <?php
 /*
-Section: BigTextDMS
+Section: BigTextDMS Full-Width
 Author: TourKick (Clifford P)
 Author URI: http://tourkick.com/?utm_source=pagelines&utm_medium=section&utm_content=authoruri&utm_campaign=bigtextdms_section
 Plugin URI: http://www.pagelinestheme.com/bigtextdms-section?utm_source=pagelines&utm_medium=section&utm_content=pluginuri&utm_campaign=bigtext_section
 Description: A <a href="https://github.com/zachleat/BigText" target="_blank">BigText</a> section that resizes text to fit one or more words on a line that fits the container. Responsive too, which means it scales with different size browsers.
 Demo: http://www.pagelinestheme.com/bigtextdms-section?utm_source=pagelines&utm_medium=section&utm_content=demolink&utm_campaign=bigtextdms_section
-Class Name: BigTextDMS
+Class Name: BigTextDMSFW
 Version: 1.0
 Cloning: true
 PageLines: true
 v3: true
-Filter: component
+Filter: component, full-width
 */
 
-class BigTextDMS extends PageLinesSection {
-// Ideas:
-// add 3D settings, like at http://www.zachleat.com/bigtext/demo/
-// add padding shorthand (can come in handy for bottom, especially with lower-case text)
-
+class BigTextDMSFW extends PageLinesSection {
 
 	function section_persistent() {
 
@@ -129,7 +125,7 @@ class BigTextDMS extends PageLinesSection {
 			'key'		=> 'bigtext_config',
 			'type'		=> 'multi',
 			'col'		=> 1, //left side
-			'title'		=> __('BigTextDMS Container Settings', $this->id),
+			'title'		=> __('BigTextDMS Full-Width Container Settings', $this->id),
 			'help'		=> '<strong><a href="http://www.pagelinestheme.com/bigtextdms-section?utm_source=pagelines&utm_medium=section&utm_content=help&utm_campaign=bigtextdms_section" target="_blank">BigTextDMS Helpful Tips</a></strong>',
 			'opts'	=> array(
 				array(
@@ -196,7 +192,7 @@ class BigTextDMS extends PageLinesSection {
 			'key'	=> 'bigtext_defaults',
 			'type'	=> 'multi',
 			'col'		=> 1, //left side
-			'title'		=> __('BigTextDMS Default Settings to set all line options (can override per line)', $this->id),
+			'title'		=> __('BigTextDMS Full-Width Default Settings to set all line options (can override per line)', $this->id),
 			'opts'	=> array(
 				array(
 					'key'	=> 'bigtext_font',
@@ -289,7 +285,7 @@ class BigTextDMS extends PageLinesSection {
 			'key'		=> 'bigtextdms_array',
 	    	'type'		=> 'accordion',
 			'col'		=> 2, //right side
-			'title'		=> __('BigTextDMS Lines', $this->id),
+			'title'		=> __('BigTextDMS Full-Width Lines', $this->id),
 			'post_type'	=> __('Line', $this->id), //does not actually register a custom post type and therefore ok to have spaces (unlike http://codex.wordpress.org/Function_Reference/register_post_type#Parameters )
 			'opts'	=> array(
 					array(
@@ -491,7 +487,7 @@ class BigTextDMS extends PageLinesSection {
 
 
 			//start BigText Area
-			echo "<div id='bigtextdms-$clone_id' class='bigtextdms' style='width: $width; max-width: $maxwidth; line-height: $lineheight; text-align: $textalign; text-decoration:$textdecoration;";
+			echo "<div id='bigtextdms-$clone_id' class='bigtextdms bigtextdmsfullwidth' style='width: $width; max-width: $maxwidth; line-height: $lineheight; text-align: $textalign; text-decoration:$textdecoration;";
 				if($color){ echo " color: $color;"; }
 				if($colorbg){ echo " background-color: $colorbg;"; }
 				if($bgimage){ echo " $bgimagecode"; }
@@ -511,7 +507,7 @@ class BigTextDMS extends PageLinesSection {
 					do_shortcode($text0);
 					// cannot do esc_html() to protect input on all these because then HTML will not work -- so do not insert your own malicious scripts ;-)
 					if(!$text0 && current_user_can('edit_theme_options')){
-						$text0 = "BigTextDMS: enter <em>Line $count</em> text or delete it.";
+						$text0 = "BigTextDMS Full-Width: enter <em>Line $count</em> text or delete it.";
 					}
 
 				$nbspbefore0 = pl_array_get( 'bigtext_text_nbsp_before0', $bigtext ) ? pl_array_get( 'bigtext_text_nbsp_before0', $bigtext ) : 0;
@@ -548,7 +544,7 @@ class BigTextDMS extends PageLinesSection {
 				}
 
 
-				echo "<div class='bigtextdms btline$count0";
+				echo "<div class='bigtextdms bigtextdmsfullwidth btline$count0";
 					if(!$exempt0){ echo "'"; } else { echo " bigtext-exempt'"; }
 					echo " style='text-decoration:$textdecoration0;"; // just so style tag isn't empty
 					if($lineheight0){ echo " line-height: $lineheight0;"; }

@@ -1,31 +1,31 @@
 ;(function($)
 {
     // Purposeful Global
-    BigTextDMS = {
+    BigText = {
         STARTING_PX_FONT_SIZE: 11,
         DEFAULT_MAX_FONT_SIZE_EM: 48,
-        GLOBAL_STYLE_ID: 'bigtextdms-style',
-        STYLE_ID: 'bigtextdms-id',
-        LINE_CLASS_PREFIX: 'bigtextdms-line',
-        LINE_FOCUS_CLASS: 'bigtextdms-focus',
-        EXEMPT_CLASS: 'bigtextdms-exempt',
+        GLOBAL_STYLE_ID: 'bigtext-style',
+        STYLE_ID: 'bigtext-id',
+        LINE_CLASS_PREFIX: 'bigtext-line',
+        LINE_FOCUS_CLASS: 'bigtext-focus',
+        EXEMPT_CLASS: 'bigtext-exempt',
         DEFAULT_CHILD_SELECTOR: '> div',
         childSelectors: {
             div: '> div',
             ol: '> li',
             ul: '> li'
         },
-        DATA_KEY: 'bigtextdmsOptions',
+        DATA_KEY: 'bigtextOptions',
         counter: 0,
         init: function($head)
         {
-            if(!$('#'+BigTextDMS.GLOBAL_STYLE_ID).length) {
-                $head.append(BigTextDMS.generateStyleTag(BigTextDMS.GLOBAL_STYLE_ID, ['.bigtextdms, .bigtextdms .' + BigTextDMS.EXEMPT_CLASS + ' { font-size: ' + BigTextDMS.STARTING_PX_FONT_SIZE + 'px; }']));
+            if(!$('#'+BigText.GLOBAL_STYLE_ID).length) {
+                $head.append(BigText.generateStyleTag(BigText.GLOBAL_STYLE_ID, ['.bigtext, .bigtext .' + BigText.EXEMPT_CLASS + ' { font-size: ' + BigText.STARTING_PX_FONT_SIZE + 'px; }']));
             }
         },
         getStyleId: function(elementId)
         {
-            return BigTextDMS.STYLE_ID + '-' + elementId;
+            return BigText.STYLE_ID + '-' + elementId;
         },
         generateStyleTag: function(id, css)
         {
@@ -34,53 +34,53 @@
         generateFontSizeCss: function(elementId, linesFontSizes, lineWordSpacings)
         {
             var css = [],
-                styleId = BigTextDMS.getStyleId(elementId);
-
+                styleId = BigText.getStyleId(elementId);
+    
             for(var j=0, k=linesFontSizes.length; j<k; j++) {
-                css.push('#' + elementId + ' .' + BigTextDMS.LINE_CLASS_PREFIX + j + ' {' +
-                    (linesFontSizes[j] ? ' font-size: ' + linesFontSizes[j] + 'em;' : '') +
+                css.push('#' + elementId + ' .' + BigText.LINE_CLASS_PREFIX + j + ' {' + 
+                    (linesFontSizes[j] ? ' font-size: ' + linesFontSizes[j] + 'em;' : '') + 
                     (lineWordSpacings[j] ? ' word-spacing: ' + lineWordSpacings[j] + 'px;' : '') + ' }');
             }
-
+    
             $('#' + styleId).remove();
-            return BigTextDMS.generateStyleTag(styleId, css);
+            return BigText.generateStyleTag(styleId, css);
         },
         testLineDimensions: function($line, maxwidth, property, size, interval, units)
         {
             $line.css(property, size + units);
-
+    
             if($line.width() >= maxwidth) {
                 $line.css(property, '');
-
+    
                 return parseFloat((parseFloat(size) - interval).toFixed(2));
             }
-
+    
             return false;
         }
     };
 
-    $.fn.bigtextdms = function(options)
+    $.fn.bigtext = function(options)
     {
         var $headCache = $('head');
-        BigTextDMS.init($headCache);
-
+        BigText.init($headCache);
+    
         options = $.extend({
-                    maxfontsize: BigTextDMS.DEFAULT_MAX_FONT_SIZE_EM,
+                    maxfontsize: BigText.DEFAULT_MAX_FONT_SIZE_EM,
                     childSelector: '',
                     bindResize: null,
                     resize: true
                 }, options || {});
-
+    
         return this.each(function()
         {
-            var $t = $(this).addClass('bigtextdms'),
+            var $t = $(this).addClass('bigtext'),
                 id = $t.attr('id'),
                 childSelector = options.childSelector ||
-                            BigTextDMS.childSelectors[this.tagName.toLowerCase()] ||
-                            BigTextDMS.DEFAULT_CHILD_SELECTOR,
+                            BigText.childSelectors[this.tagName.toLowerCase()] ||
+                            BigText.DEFAULT_CHILD_SELECTOR,
                 maxwidth = $t.width(),
                 $c = $t.clone(true)
-                            .addClass('bigtextdms-cloned')
+                            .addClass('bigtext-cloned')
                             .css({
                                 'min-width': parseInt(maxwidth, 10),
                                 width: 'auto',
@@ -92,17 +92,17 @@
                 eventName;
 
             if(!id) {
-                id = 'bigtextdms-id' + (BigTextDMS.counter++);
+                id = 'bigtext-id' + (BigText.counter++);
                 eventNamespace = id;
                 $t.attr('id', id);
             } else {
-                eventNamespace = 'bigtextdms-' + id;
+                eventNamespace = 'bigtext-' + id;
             }
 
             if(options.resize) {
                 function resizeFunction()
                 {
-                    $('#'+id).bigtextdms(options);
+                    $('#'+id).bigtext(options);
                 }
 
                 eventName = 'resize.' + eventNamespace;
@@ -121,16 +121,16 @@
                 }
             }
 
-            var styleId = BigTextDMS.getStyleId(id);
+            var styleId = BigText.getStyleId(id);
             $('#' + styleId).remove();
-
+    
             // font-size isn't the only thing we can modify, we can also mess with:
             // word-spacing and letter-spacing.
             // Note: webkit does not respect subpixel letter-spacing or word-spacing,
             // nor does it respect hundredths of a font-size em.
             var fontSizes = [],
                 wordSpacings = [];
-
+    
             $c.find(childSelector).css({
                 float: 'left',
                 clear: 'left'
@@ -140,26 +140,26 @@
                     fontMatch = 1,
                     lineMax;
 
-                if($line.hasClass(BigTextDMS.EXEMPT_CLASS)) {
+                if($line.hasClass(BigText.EXEMPT_CLASS)) {
                     fontSizes.push(null);
                     return;
                 }
 
                 for(var m=0, n=intervals.length; m<n; m++) {
                     inner: for(var j=1, k=10; j<=k; j++) {
-                        lineMax = BigTextDMS.testLineDimensions($line, maxwidth, 'font-size', fontMatch + j*intervals[m], intervals[m], 'em');
-
+                        lineMax = BigText.testLineDimensions($line, maxwidth, 'font-size', fontMatch + j*intervals[m], intervals[m], 'em');
+    
                         if(lineMax !== false) {
                             fontMatch = lineMax;
                             break inner;
                         }
                     }
-
+    
                     if(fontMatch > options.maxfontsize) {
                         break;
                     }
                 }
-
+    
                 if(fontMatch > options.maxfontsize) {
                     fontSizes.push(options.maxfontsize);
                 } else {
@@ -171,39 +171,39 @@
                     interval = 1,
                     maxWordSpacing;
 
-                if($line.hasClass(BigTextDMS.EXEMPT_CLASS)) {
+                if($line.hasClass(BigText.EXEMPT_CLASS)) {
                     wordSpacings.push(null);
                     return;
                 }
 
                 // must re-use font-size, even though it was removed above.
                 $line.css('font-size', fontSizes[lineNumber] + 'em');
-
+    
                 for(var m=0, n=10; m<n; m+=interval) {
-                    maxWordSpacing = BigTextDMS.testLineDimensions($line, maxwidth, 'word-spacing', m, interval, 'px');
+                    maxWordSpacing = BigText.testLineDimensions($line, maxwidth, 'word-spacing', m, interval, 'px');
                     if(maxWordSpacing !== false) {
                         wordSpacing = maxWordSpacing;
                         break;
                     }
                 }
-
+    
                 $line.css('font-size', '');
                 wordSpacings.push(wordSpacing);
             }).removeAttr('style');
-
-            $headCache.append(BigTextDMS.generateFontSizeCss(id, fontSizes, wordSpacings));
-
+    
+            $headCache.append(BigText.generateFontSizeCss(id, fontSizes, wordSpacings));
+    
             $c.remove();
-
+    
             $t.find(childSelector).each(function(lineNumber)
             {
                 $(this).each(function()
                     {
                         // remove existing line classes.
-                        this.className = this.className.replace(new RegExp('\\s*' + BigTextDMS.LINE_CLASS_PREFIX + '\\d+'), '');
+                        this.className = this.className.replace(new RegExp('\\s*' + BigText.LINE_CLASS_PREFIX + '\\d+'), '');
                     })
-                    .addClass(BigTextDMS.LINE_CLASS_PREFIX + lineNumber)
-                    [maxwidth / fontSizes[lineNumber] < 80 ? 'addClass' : 'removeClass'](BigTextDMS.LINE_FOCUS_CLASS);
+                    .addClass(BigText.LINE_CLASS_PREFIX + lineNumber)
+                    [maxwidth / fontSizes[lineNumber] < 80 ? 'addClass' : 'removeClass'](BigText.LINE_FOCUS_CLASS);
             });
         });
     };
