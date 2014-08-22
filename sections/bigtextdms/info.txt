@@ -14,5 +14,10 @@ Make text big. Extensive line-by-line options!
 See <a href="http://www.pagelinestheme.com/bigtext-dms-section?utm_source=pagelines&utm_medium=section&utm_content=plstoredescription&utm_campaign=bigtext_dms_section" target="_blank">Section's Official Page</a> for more details.
 
 == Changelog ==
+= 1.1 =
+* WARNING: Will lose and need to re-create all full-width BigTextDMS sections upon update (shouldn't happen again as this was a DMS change a while back).
+* Changed to dual-width section instead of 2 stand-alone sections.
+* Updated art.
+
 = 1.0 =
 * Initial release. Updated to work on PageLines DMS; no longer compatible with v2/Framework. This is BigText DMS v1.0. The last Framework version was BigText 1.20130701.
